@@ -50,7 +50,7 @@ filters.Add<MyEntity>(
     {
         return item.Property != "Ignore";
     });
-EfGraphQLConventions.RegisterInContainer(services, model, filters);
+EfGraphQLConventions<MyDbContext>.RegisterInContainer(services, model, filters);
 ```
 <sup>[snippet source](/src/Snippets/GlobalFilterSnippets.cs#L19-L29)</sup>
 <!-- endsnippet -->

@@ -6,10 +6,10 @@ using GraphQL.Types;
 #region QueryUsedInController
 
 public class Query :
-    EfObjectGraphType
+    EfQueryGraphType<MyDataContext>
 {
-    public Query(IEfGraphQLService efGraphQlService) :
-        base(efGraphQlService)
+    public Query(IEfGraphQLService<MyDataContext> efGraphQlService) :
+        base(efGraphQlService, userContext => (MyDataContext) userContext)
     {
         AddQueryField(
             name: "companies",

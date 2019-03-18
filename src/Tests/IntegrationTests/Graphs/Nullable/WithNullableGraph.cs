@@ -1,9 +1,9 @@
 ﻿using GraphQL.EntityFramework;
 
 public class WithNullableGraph :
-    EfObjectGraphType<WithNullableEntity>
+    EfObjectGraphType<WithNullableEntity, MyDataContext>
 {
-    public WithNullableGraph(IEfGraphQLService graphQlService) :
+    public WithNullableGraph(IEfGraphQLService<MyDataContext> graphQlService) :
         base(graphQlService)
     {
         Field(x => x.Id);

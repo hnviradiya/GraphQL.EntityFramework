@@ -1,11 +1,13 @@
 ﻿using System;
 using GraphQL.Types.Relay;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GraphQL.EntityFramework
 {
-    public static class EfGraphQLConventions
+    public static class EfGraphQLConventions<TDbContext>
+        where TDbContext : DbContext
     {
         #region RegisterInContainerAction
         public static void RegisterInContainer(Action<Type, object> register, IModel model, GlobalFilters filters = null)
@@ -21,8 +23,8 @@ namespace GraphQL.EntityFramework
                 filters = new GlobalFilters();
             }
 
-            var service = new EfGraphQLService(model, filters);
-            register(typeof(IEfGraphQLService), service);
+            var service = new EfGraphQLService<TDbContext>(model, filters);
+            register(typeof(IEfGraphQLService<TDbContext>), service);
         }
 
         #region RegisterInContainerServiceCollection

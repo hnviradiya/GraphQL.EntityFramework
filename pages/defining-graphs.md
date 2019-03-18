@@ -57,10 +57,10 @@ Queries in GraphQL.net are defined using the [Fields API](https://graphql-dotnet
 <!-- snippet: rootQuery -->
 ```cs
 public class Query :
-    EfObjectGraphType
+    EfQueryGraphType<DataContext>
 {
-    public Query(IEfGraphQLService graphQlService) :
-        base(graphQlService)
+    public Query(IEfGraphQLService<DataContext> graphQlService) :
+        base(graphQlService, userContext => (DataContext) userContext)
     {
         AddSingleField(
             resolve: context =>
@@ -79,7 +79,7 @@ public class Query :
     }
 }
 ```
-<sup>[snippet source](/src/Snippets/RootQuery.cs#L6-L31)</sup>
+<sup>[snippet source](/src/Snippets/RootQuery.cs#L7-L32)</sup>
 <!-- endsnippet -->
 
 `AddQueryField` will result in all matching being found and returned.
@@ -92,9 +92,9 @@ public class Query :
 <!-- snippet: typedGraph -->
 ```cs
 public class CompanyGraph :
-    EfObjectGraphType<Company>
+    EfObjectGraphType<Company,DataContext>
 {
-    public CompanyGraph(IEfGraphQLService graphQlService) :
+    public CompanyGraph(IEfGraphQLService<DataContext> graphQlService) :
         base(graphQlService)
     {
         Field(x => x.Id);
@@ -109,7 +109,7 @@ public class CompanyGraph :
     }
 }
 ```
-<sup>[snippet source](/src/Snippets/TypedGraph.cs#L7-L27)</sup>
+<sup>[snippet source](/src/Snippets/TypedGraph.cs#L8-L28)</sup>
 <!-- endsnippet -->
 
 
@@ -124,10 +124,10 @@ public class CompanyGraph :
 <!-- snippet: ConnectionRootQuery -->
 ```cs
 public class Query :
-    EfObjectGraphType
+    EfQueryGraphType<MyDataContext>
 {
-    public Query(IEfGraphQLService graphQlService) :
-        base(graphQlService)
+    public Query(IEfGraphQLService<MyDataContext> graphQlService) :
+        base(graphQlService, userContext => (MyDataContext) userContext)
     {
         AddQueryConnectionField(
             name: "companies",
@@ -139,7 +139,7 @@ public class Query :
     }
 }
 ```
-<sup>[snippet source](/src/Snippets/ConnectionRootQuery.cs#L6-L24)</sup>
+<sup>[snippet source](/src/Snippets/ConnectionRootQuery.cs#L7-L25)</sup>
 <!-- endsnippet -->
 
 
@@ -222,9 +222,9 @@ public class Query :
 <!-- snippet: ConnectionTypedGraph -->
 ```cs
 public class CompanyGraph :
-    EfObjectGraphType<Company>
+    EfObjectGraphType<Company, MyDataContext>
 {
-    public CompanyGraph(IEfGraphQLService graphQlService) :
+    public CompanyGraph(IEfGraphQLService<MyDataContext> graphQlService) :
         base(graphQlService)
     {
         AddNavigationConnectionField(
@@ -233,7 +233,7 @@ public class CompanyGraph :
     }
 }
 ```
-<sup>[snippet source](/src/Snippets/ConnectionTypedGraph.cs#L7-L21)</sup>
+<sup>[snippet source](/src/Snippets/ConnectionTypedGraph.cs#L8-L22)</sup>
 <!-- endsnippet -->
 
 

@@ -24,7 +24,7 @@ public class GlobalFilterSnippets
             {
                 return item.Property != "Ignore";
             });
-        EfGraphQLConventions.RegisterInContainer(services, model, filters);
+        EfGraphQLConventions<MyDbContext>.RegisterInContainer(services, model, filters);
 
         #endregion
     }

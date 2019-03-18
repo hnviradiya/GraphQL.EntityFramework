@@ -7,7 +7,7 @@ using GraphQL.Types;
 
 namespace GraphQL.EntityFramework
 {
-    partial class EfGraphQLService
+    partial class EfGraphQLService<TDbContext>
     {
         public void AddNavigationConnectionField<TReturn>(
             ObjectGraphType graph,

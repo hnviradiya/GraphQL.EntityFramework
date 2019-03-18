@@ -1,11 +1,13 @@
 ﻿using System;
 using GraphQL.Types;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace GraphQL.EntityFramework
 {
-    public partial class EfGraphQLService :
-        IEfGraphQLService
+    public partial class EfGraphQLService<TDbContext> :
+        IEfGraphQLService<TDbContext>
+        where TDbContext : DbContext
     {
         GlobalFilters filters;
 

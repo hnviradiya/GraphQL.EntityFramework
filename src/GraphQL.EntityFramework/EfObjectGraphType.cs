@@ -2,18 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using GraphQL.Types;
+using Microsoft.EntityFrameworkCore;
 
 namespace GraphQL.EntityFramework
 {
-    public class EfObjectGraphType :
+    public abstract class EfQueryGraphType<TDbContext> :
         ObjectGraphType
+        where TDbContext : DbContext
     {
-        IEfGraphQLService efGraphQlService;
+        IEfGraphQLService<TDbContext> efGraphQlService;
+        Func<object, TDbContext> dbContextResolver;
 
-        public EfObjectGraphType(IEfGraphQLService efGraphQlService)
+        public EfQueryGraphType(IEfGraphQLService<TDbContext> efGraphQlService, Func<object,TDbContext> dbContextResolver)
         {
             Guard.AgainstNull(nameof(efGraphQlService), efGraphQlService);
             this.efGraphQlService = efGraphQlService;
+            this.dbContextResolver = dbContextResolver;
         }
 
         protected void AddNavigationConnectionField<TReturn>(

@@ -1,9 +1,9 @@
 ﻿using GraphQL.EntityFramework;
 
 public class SkipLevelGraph :
-    EfObjectGraphType<Level1Entity>
+    EfObjectGraphType<Level1Entity, MyDataContext>
 {
-    public SkipLevelGraph(IEfGraphQLService graphQlService) :
+    public SkipLevelGraph(IEfGraphQLService<MyDataContext> graphQlService) :
         base(graphQlService)
     {
         Field(x => x.Id);

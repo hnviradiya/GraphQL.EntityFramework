@@ -1,15 +1,16 @@
 ﻿using System.Linq;
 using GraphQL.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 
 class ConnectionRootQuery
 {
     #region ConnectionRootQuery
 
     public class Query :
-        EfObjectGraphType
+        EfQueryGraphType<MyDataContext>
     {
-        public Query(IEfGraphQLService graphQlService) :
-            base(graphQlService)
+        public Query(IEfGraphQLService<MyDataContext> graphQlService) :
+            base(graphQlService, userContext => (MyDataContext) userContext)
         {
             AddQueryConnectionField(
                 name: "companies",
@@ -23,20 +24,21 @@ class ConnectionRootQuery
 
     #endregion
 
-    class Company
+    public class Company
     {
     }
 
     class CompanyGraph :
-        EfObjectGraphType<Company>
+        EfObjectGraphType<Company, MyDataContext>
     {
-        public CompanyGraph(IEfGraphQLService efGraphQlService) :
+        public CompanyGraph(IEfGraphQLService<MyDataContext> efGraphQlService) :
             base(efGraphQlService)
         {
         }
     }
 
-    class MyDataContext
+    public class MyDataContext :
+        DbContext
     {
         public IQueryable<Company> Companies { get; set; }
     }

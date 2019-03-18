@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using GraphQL.EntityFramework;
 using GraphQL.Types;
+using Microsoft.EntityFrameworkCore;
 
 class ConnectionTypedGraph
 {
     #region ConnectionTypedGraph
 
     public class CompanyGraph :
-        EfObjectGraphType<Company>
+        EfObjectGraphType<Company, MyDataContext>
     {
-        public CompanyGraph(IEfGraphQLService graphQlService) :
+        public CompanyGraph(IEfGraphQLService<MyDataContext> graphQlService) :
             base(graphQlService)
         {
             AddNavigationConnectionField(
@@ -26,6 +27,11 @@ class ConnectionTypedGraph
     }
 
     public class Employee
+    {
+    }
+
+    public class MyDataContext :
+        DbContext
     {
     }
 

@@ -1,10 +1,10 @@
 ﻿using GraphQL.EntityFramework;
 
 public class Query :
-    EfObjectGraphType
+    EfQueryGraphType<MyDataContext>
 {
-    public Query(IEfGraphQLService efGraphQlService) :
-        base(efGraphQlService)
+    public Query(IEfGraphQLService<MyDataContext> efGraphQlService) :
+        base(efGraphQlService, userContext => (MyDataContext) userContext)
     {
         AddQueryField(
             name: "customType",
@@ -20,7 +20,8 @@ public class Query :
             {
                 var dataContext = (MyDataContext) context.UserContext;
                 return dataContext.Level1Entities;
-            }, graphType: typeof(SkipLevelGraph));
+            },
+            graphType: typeof(SkipLevelGraph));
 
         AddQueryField(
             name: "manyChildren",

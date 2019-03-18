@@ -6,7 +6,7 @@ using GraphQL.Types;
 
 namespace GraphQL.EntityFramework
 {
-    partial class EfGraphQLService
+    partial class EfGraphQLService<TDbContext>
     {
         public void AddQueryConnectionField<TReturn>(
             ObjectGraphType graph,

@@ -1,9 +1,9 @@
 ﻿using GraphQL.EntityFramework;
 
 public class FilterParentGraph :
-    EfObjectGraphType<FilterParentEntity>
+    EfObjectGraphType<FilterParentEntity, MyDataContext>
 {
-    public FilterParentGraph(IEfGraphQLService graphQlService) :
+    public FilterParentGraph(IEfGraphQLService<MyDataContext> graphQlService) :
         base(graphQlService)
     {
         Field(x => x.Id);

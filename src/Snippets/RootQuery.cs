@@ -1,15 +1,16 @@
 ﻿using System.Linq;
 using GraphQL.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 
 class RootQuery
 {
     #region rootQuery
 
     public class Query :
-        EfObjectGraphType
+        EfQueryGraphType<DataContext>
     {
-        public Query(IEfGraphQLService graphQlService) :
-            base(graphQlService)
+        public Query(IEfGraphQLService<DataContext> graphQlService) :
+            base(graphQlService, userContext => (DataContext) userContext)
         {
             AddSingleField(
                 resolve: context =>
@@ -30,19 +31,19 @@ class RootQuery
 
     #endregion
 
-    class DataContext
+    public class DataContext : DbContext
     {
         public IQueryable<Company> Companies { get; set; }
     }
 
-    class Company
+    public class Company
     {
     }
 
     class CompanyGraph:
-        EfObjectGraphType<Company>
+        EfObjectGraphType<Company, DataContext>
     {
-        public CompanyGraph(IEfGraphQLService efGraphQlService) :
+        public CompanyGraph(IEfGraphQLService<DataContext> efGraphQlService) :
             base(efGraphQlService)
         {
         }

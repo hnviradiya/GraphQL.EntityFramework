@@ -41,14 +41,14 @@ This can be applied to a [IServiceCollection](https://docs.microsoft.com/en-us/d
 ```cs
 public static void RegisterInContainer(IServiceCollection services, IModel model, GlobalFilters filters = null)
 ```
-<sup>[snippet source](/src/GraphQL.EntityFramework/EfGraphQLConventions.cs#L28-L30)</sup>
+<sup>[snippet source](/src/GraphQL.EntityFramework/EfGraphQLConventions.cs#L30-L32)</sup>
 <!-- endsnippet -->
 
 Usage:
 
 <!-- snippet: RegisterInContainerServiceCollectionUsage -->
 ```cs
-EfGraphQLConventions.RegisterInContainer(serviceCollection, MyDataContext.DataModel);
+EfGraphQLConventions<MyDataContext>.RegisterInContainer(serviceCollection, MyDataContext.DataModel);
 ```
 <sup>[snippet source](/src/Snippets/Configuration.cs#L10-L14)</sup>
 <!-- endsnippet -->
@@ -59,7 +59,7 @@ Or via an Action.
 ```cs
 public static void RegisterInContainer(Action<Type, object> register, IModel model, GlobalFilters filters = null)
 ```
-<sup>[snippet source](/src/GraphQL.EntityFramework/EfGraphQLConventions.cs#L10-L12)</sup>
+<sup>[snippet source](/src/GraphQL.EntityFramework/EfGraphQLConventions.cs#L12-L14)</sup>
 <!-- endsnippet -->
 
 Then the usage entry point `IEfGraphQLService` can be resolved via [dependency injection in GraphQL.net](https://graphql-dotnet.github.io/docs/guides/advanced#dependency-injection) to be used in `ObjectGraphType`s when adding query fields.
@@ -261,10 +261,10 @@ The same instance of the DataContext can then be accessed in the `resolve` deleg
 <!-- snippet: QueryUsedInController -->
 ```cs
 public class Query :
-    EfObjectGraphType
+    EfQueryGraphType<MyDataContext>
 {
-    public Query(IEfGraphQLService efGraphQlService) :
-        base(efGraphQlService)
+    public Query(IEfGraphQLService<MyDataContext> efGraphQlService) :
+        base(efGraphQlService, userContext => (MyDataContext) userContext)
     {
         AddQueryField(
             name: "companies",

@@ -1,9 +1,9 @@
 ﻿using GraphQL.EntityFramework;
 
 public class Level2Graph :
-    EfObjectGraphType<Level2Entity>
+    EfObjectGraphType<Level2Entity, MyDataContext>
 {
-    public Level2Graph(IEfGraphQLService graphQlService) :
+    public Level2Graph(IEfGraphQLService<MyDataContext> graphQlService) :
         base(graphQlService)
     {
         Field(x => x.Id);
