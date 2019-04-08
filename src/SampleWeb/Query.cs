@@ -2,6 +2,7 @@
 using System.Linq;
 using GraphQL.EntityFramework;
 using GraphQL.Types;
+using SampleWeb;
 
 #region QueryUsedInController
 
@@ -15,7 +16,7 @@ public class Query :
             name: "companies",
             resolve: context =>
             {
-                var dataContext = (MyDataContext) context.UserContext;
+                var dataContext = (context.UserContext as DataContexts).myDataContext;
                 return dataContext.Companies;
             });
 
@@ -24,7 +25,7 @@ public class Query :
         AddSingleField(
             resolve: context =>
             {
-                var dataContext = (MyDataContext) context.UserContext;
+                var dataContext = (context.UserContext as DataContexts).myDataContext;
                 return dataContext.Companies;
             },
             name: "company");
@@ -33,7 +34,7 @@ public class Query :
             name: "companiesConnection",
             resolve: context =>
             {
-                var dataContext = (MyDataContext) context.UserContext;
+                var dataContext = (context.UserContext as DataContexts).myDataContext;
                 return dataContext.Companies;
             });
 
@@ -41,7 +42,7 @@ public class Query :
             name: "employees",
             resolve: context =>
             {
-                var dataContext = (MyDataContext) context.UserContext;
+                var dataContext = (context.UserContext as DataContexts).yourDataContext;
                 return dataContext.Employees;
             });
 
@@ -50,7 +51,7 @@ public class Query :
             resolve: context =>
             {
                 var content = context.GetArgument<string>("content");
-                var dataContext = (MyDataContext) context.UserContext;
+                var dataContext = (context.UserContext as DataContexts).yourDataContext;
                 return dataContext.Employees.Where(x => x.Content == content);
             },
             arguments: new QueryArguments(
@@ -63,7 +64,7 @@ public class Query :
             name: "employeesConnection",
             resolve: context =>
             {
-                var dataContext = (MyDataContext) context.UserContext;
+                var dataContext = (context.UserContext as DataContexts).yourDataContext;
                 return dataContext.Employees;
             });
 
@@ -79,7 +80,7 @@ public class Query :
             ),
             resolve: context =>
             {
-                var dataContext = (MyDataContext) context.UserContext;
+                var dataContext = (context.UserContext as DataContexts).yourDataContext;
                 IQueryable<Employee> query = dataContext.Employees;
 
                 if (context.HasArgument("where"))

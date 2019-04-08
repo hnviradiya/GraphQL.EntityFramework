@@ -1,5 +1,5 @@
 
 public class ContextFactory
 {
-    public MyDataContext BuildContext() => DataContextBuilder.BuildDataContext();
+    public MyDataContext BuildContext() => MyDataContextBuilder.BuildDataContext();
 }

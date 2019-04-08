@@ -3,7 +3,6 @@
 public class MyDataContext :
     DbContext
 {
-    public DbSet<Employee> Employees { get; set; }
     public DbSet<Company> Companies { get; set; }
 
     public MyDataContext()
@@ -20,6 +19,5 @@ public class MyDataContext :
             .HasMany(c => c.Employees)
             .WithOne(e => e.Company)
             .IsRequired();
-        modelBuilder.Entity<Employee>();
     }
 }

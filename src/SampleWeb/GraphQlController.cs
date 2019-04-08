@@ -7,6 +7,7 @@ using GraphQL.Types;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json.Linq;
+using SampleWeb;
 
 #region GraphQlController
 [Route("[controller]")]
@@ -26,10 +27,10 @@ public class GraphQlController :
     [HttpPost]
     public Task<ExecutionResult> Post(
         [BindRequired, FromBody] PostBody body,
-        [FromServices] MyDataContext dataContext,
+        [FromServices] MyDataContext myDataContext, [FromServices] YourDataContext yourDataContext,
         CancellationToken cancellation)
     {
-        return Execute(dataContext, body.Query, body.OperationName, body.Variables, cancellation);
+        return Execute(myDataContext, yourDataContext,  body.Query, body.OperationName, body.Variables, cancellation);
     }
 
     public class PostBody
@@ -44,15 +45,15 @@ public class GraphQlController :
         [FromQuery] string query,
         [FromQuery] string variables,
         [FromQuery] string operationName,
-        [FromServices] MyDataContext dataContext,
+        [FromServices] MyDataContext myDataContext, [FromServices] YourDataContext yourDataContext,
         CancellationToken cancellation)
     {
         var jObject = ParseVariables(variables);
-        return Execute(dataContext, query, operationName, jObject, cancellation);
+        return Execute(myDataContext, yourDataContext, query, operationName, jObject, cancellation);
     }
 
     async Task<ExecutionResult> Execute(
-        MyDataContext dataContext,
+        MyDataContext myDataContext, YourDataContext yourDataContext,
         string query,
         string operationName,
         JObject variables,
@@ -64,7 +65,8 @@ public class GraphQlController :
             Query = query,
             OperationName = operationName,
             Inputs = variables?.ToInputs(),
-            UserContext = dataContext,
+            UserContext = new DataContexts() { myDataContext = myDataContext, yourDataContext = yourDataContext },
+
             CancellationToken = cancellation,
 #if (DEBUG)
             ExposeExceptions = true,
